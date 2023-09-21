@@ -1,135 +1,76 @@
-// Espera o DOM ser carregado antes de executar o código
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
+  var orientacaoInput = document.getElementById("orientacao");
+  var tipoOS = document.getElementById("tipoos");
+  var relatoInput = document.getElementById("relato");
 
-    // Preenche o campo "ORIENTAÇÃO PARA OS TÉCNICOS" com o texto inicial
-    var orientacaoInput = document.getElementById("orientacao");
-    var tipoOS = document.getElementById("tipoos");
-  
-    tipoOS.addEventListener("change", function() {
-      if (tipoOS.value === "manutencao") {
-        var fraseOrientacao = "Verificar a integridade do equipamento e dos cabos, fazer todos os testes possíveis junto ao cliente para estar tirando qualquer dúvida que ele venha ter";
-        orientacaoInput.value = fraseOrientacao;
-      } else if (tipoOS.value === "suporte" || tipoOS.value === "suporteint") {
-        var fraseOrientacao = "Verificar a integridade do equipamento, Verificar a integridade dos conectores. Caso necessário EFETUAR A TROCA DO EQUIPAMENTO. Efetuar todos os testes de velocidade junto ao cliente.";
-        orientacaoInput.value = fraseOrientacao;
-      } else {
-        orientacaoInput.value = ""; // Limpa o campo caso o tipo de O.S. seja diferente de manutencao, suporte ou suporteint
-      }
-    });
-  
-    // Preenche o campo "RELATO" com o texto inicial de acordo com o tipo de O.S.
-    var tipoOS = document.getElementById("tipoos");
-    var relatoInput = document.getElementById("relato");
-  
-    tipoOS.addEventListener("change", function() {
-      if (tipoOS.value === "suporte") {
-        relatoInput.value = "Cliente informa estar sem conexão. Foi verificado que o mesmo teve diversas quedas de conexão. Mesmo após as configurações remotas, sua conexão não retornou.";
-      } else if (tipoOS.value === "manutencao") {
-        relatoInput.value = "Cliente sem conexão. Foi verificado que o equipamento está com LOS em alerta.";
-      } else if (tipoOS.value === "suporteint") {
-        relatoInput.value = "Cliente informa lentidão em sua conexão. Foram realizadas diversas configurações remotas em seu equipamento, no entanto, sua conexão não normalizou.";
-      } else {
-        relatoInput.value = ""; // Caso o tipo de O.S. não seja suporte, manutencao ou suporteint, deixa o campo vazio
-      }
-    });
-  
-    // Obtém referência aos elementos do formulário que serão mostrados/ocultados de acordo com o tipo de O.S.
-  
-    var potenciaONU = document.getElementById("potencia-onu");
-    var nomePotenciaONU = document.getElementById("nome-potencia-onu");
-    var alarmesEquipamento = document.getElementById("alarmes-equipamento");
-    var nomeAlarmesEquipamento = document.getElementById("nome-alarmes-equipamento");
-    var dispositivosSemInternet = document.getElementById("dispositivos-sem-internet");
-    var nomeDispositivosSemInternet = document.getElementById("nome-dispositivos-sem-internet");
-  
-  
-  
-  });
+  // Função para preencher orientação e relato
+  function preencherCampos() {
+    var fraseOrientacao = "";
+    var relato = "";
+
+    switch (tipoOS.value) {
+      case "manutencao":
+        fraseOrientacao =
+          "Verificar a integridade do equipamento e dos cabos, fazer todos os testes possíveis junto ao cliente para estar tirando qualquer dúvida que ele venha ter";
+        relato = "Cliente sem conexão. Foi verificado que o equipamento está com LOS em alerta.";
+        break;
+      case "suporte":
+      case "suporteint":
+        fraseOrientacao =
+          "Verificar a integridade do equipamento, Verificar a integridade dos conectores. Caso necessário EFETUAR A TROCA DO EQUIPAMENTO. Efetuar todos os testes de velocidade junto ao cliente.";
+        if (tipoOS.value === "suporte") {
+          relato = "Cliente informa estar sem conexão. Foi verificado que o mesmo teve diversas quedas de conexão. Mesmo após as configurações remotas, sua conexão não retornou.";
+        } else {
+          relato = "Cliente informa lentidão em sua conexão. Foram realizadas diversas configurações remotas em seu equipamento, no entanto, sua conexão não normalizou.";
+        }
+        break;
+      default:
+        orientacaoInput.value = "";
+        relatoInput.value = "";
+        return; // Sai da função se o tipo de O.S. não for manutencao, suporte ou suporteint
+    }
+
+    orientacaoInput.value = fraseOrientacao;
+    relatoInput.value = relato;
+  }
+
+  // Adiciona um ouvinte de evento para o campo "tipoos"
+  tipoOS.addEventListener("change", preencherCampos);
+
   // Função para verificar se um checkbox está marcado
   function isChecked(checkboxId) {
     return document.getElementById(checkboxId).checked;
   }
-  
+
   // Função para exibir/ocultar campos com base nas opções marcadas
-  function toggleCampos() {
-    // Potência ONU
-    if (isChecked('chkPotenciaOnu')) {
-      document.getElementById('campoPotenciaOnu').style.display = 'block';
-    } else {
-      document.getElementById('campoPotenciaOnu').style.display = 'none';
-    }
-  
-    // GPON
-    if (isChecked('chkGpon')) {
-      document.getElementById('campoGpon').style.display = 'block';
-    } else {
-      document.getElementById('campoGpon').style.display = 'none';
-    }
-  
-    // PPPoE
-    if (isChecked('chkPPPoE')) {
-      document.getElementById('campoPPPoE').style.display = 'block';
-    } else {
-      document.getElementById('campoPPPoE').style.display = 'none';
-    }
-  
-    if (isChecked('chkAlarmes')) {
-      document.getElementById('campoAlarmes').style.display = 'block';
-    } else {
-      document.getElementById('campoAlarmes').style.display = 'none';
-    }
-  
-    if (isChecked('chkModelo')) {
-      document.getElementById('campoModelo').style.display = 'block';
-    } else {
-      document.getElementById('campoModelo').style.display = 'none';
-    }
-  
-    if (isChecked('chkocorre')) {
-      document.getElementById('campoOcorre').style.display = 'block';
-    } else {
-      document.getElementById('campoOcorre').style.display = 'none';
-    }
-  
-    if (isChecked('chkTemperatura')) {
-      document.getElementById('campoTemp').style.display = 'block';
-    } else {
-      document.getElementById('campoTemp').style.display = 'none';
-    }
-  
-    if (isChecked('chkOutros')) {
-      document.getElementById('campoOutros').style.display = 'block';
-    } else {
-      document.getElementById('campoOutros').style.display = 'none';
-    }
-  
-    if (isChecked('chkModelo')) {
-      document.getElementById('campoModelo').style.display = 'block';
-    } else {
-      document.getElementById('campoModelo').style.display = 'none';
-    }
-    // Potência OLT
-    if (isChecked('chkPotenciaOlt')) {
-      document.getElementById('campoPotenciaOlt').style.display = 'block';
-    } else {
-      document.getElementById('campoPotenciaOlt').style.display = 'none';
-    }
+  function toggleCampos(checkboxId, campoId) {
+    var campo = document.getElementById(campoId);
+    campo.style.display = isChecked(checkboxId) ? "block" : "none";
   }
-  
-  // Adicione um ouvinte de evento para os checkboxes
-  document.getElementById('chkPotenciaOnu').addEventListener('change', toggleCampos);
-  document.getElementById('chkGpon').addEventListener('change', toggleCampos);
-  document.getElementById('chkPPPoE').addEventListener('change', toggleCampos);
-  document.getElementById('chkPotenciaOlt').addEventListener('change', toggleCampos);
-  document.getElementById('chkAlarmes').addEventListener('change', toggleCampos);
-  document.getElementById('chkocorre').addEventListener('change', toggleCampos);
-  document.getElementById('chkTemperatura').addEventListener('change', toggleCampos);
-  document.getElementById('chkModelo').addEventListener('change', toggleCampos);
-  document.getElementById('chkOutros').addEventListener('change', toggleCampos);
-  
-  
-  // Adiciona um listener para o evento "submit" do formulário
-  document.getElementById("formulario").addEventListener("submit", function(event) {
+
+  // Adiciona um ouvinte de evento para cada checkbox
+  var checkboxes = [
+    { checkboxId: "chkPotenciaOnu", campoId: "campoPotenciaOnu" },
+    { checkboxId: "chkGpon", campoId: "campoGpon" },
+    { checkboxId: "chkPPPoE", campoId: "campoPPPoE" },
+    { checkboxId: "chkPotenciaOlt", campoId: "campoPotenciaOlt" },
+    { checkboxId: "chkAlarmes", campoId: "campoAlarmes" },
+    { checkboxId: "chkocorre", campoId: "campoOcorre" },
+    { checkboxId: "chkTemperatura", campoId: "campoTemp" },
+    { checkboxId: "chkModelo", campoId: "campoModelo" },
+    { checkboxId: "chkOutros", campoId: "campoOutros" },
+  ];
+
+  checkboxes.forEach(function (checkbox) {
+    var checkboxElement = document.getElementById(checkbox.checkboxId);
+    checkboxElement.addEventListener("change", function () {
+      toggleCampos(checkbox.checkboxId, checkbox.campoId);
+    });
+  });
+
+  // Adiciona um ouvinte de evento para o formulário
+  var formulario = document.getElementById("formulario");
+  formulario.addEventListener("submit", function (event) {
     event.preventDefault();
   
     // Obtém os valores dos campos do formulário
@@ -241,28 +182,26 @@ document.addEventListener("DOMContentLoaded", function() {
   
   
       // Exibe a janela modal
-      var modal = document.getElementById("modal");
-      modal.style.display = "block";
-  
-      // Exibe o conteúdo preenchido na janela modal
-      var textoExibido = document.getElementById("textoExibido");
-      textoExibido.value = conteudoExibido;
-  
-      // Adiciona um listener para o botão Copiar
-      document.getElementById("btnCopiar").addEventListener("click", function() {
-        textoExibido.select();
-        document.execCommand("copy");
-      });
+    var modal = document.getElementById("modal");
+    modal.style.display = "block";
+
+    // Exibe o conteúdo preenchido na janela modal
+    var textoExibido = document.getElementById("textoExibido");
+    textoExibido.value = conteudoExibido;
+
+    // Adiciona um ouvinte de evento para o botão Copiar
+    var btnCopiar = document.getElementById("btnCopiar");
+    btnCopiar.addEventListener("click", function () {
+      textoExibido.select();
+      document.execCommand("copy");
     });
-  
-  
-    // Fecha a janela modal ao clicar no botão Fechar
-    document.getElementById("btnFecharModal").addEventListener("click", function() {
-      var modal = document.getElementById("modal");
+
+    // Adiciona um ouvinte de evento para o botão Fechar
+    var btnFecharModal = document.getElementById("btnFecharModal");
+    btnFecharModal.addEventListener("click", function () {
       modal.style.display = "none";
-  
-      // Recarrega a página automaticamente
-      location.reload();
+      location.reload(); // Recarrega a página automaticamente
     });
   });
+});
   
