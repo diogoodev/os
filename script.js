@@ -3,21 +3,19 @@ document.addEventListener("DOMContentLoaded", function () {
   var tipoOS = document.getElementById("tipoos");
   var relatoInput = document.getElementById("relato");
 
-  // Função para preencher orientação e relato
+  // Função para preencher os campos de orientação e relato com base no tipo de O.S.
   function preencherCampos() {
     var fraseOrientacao = "";
     var relato = "";
 
     switch (tipoOS.value) {
       case "manutencao":
-        fraseOrientacao =
-          "Verificar a integridade do equipamento e dos cabos, fazer todos os testes possíveis junto ao cliente para estar tirando qualquer dúvida que ele venha ter";
+        fraseOrientacao = "Verificar a integridade do equipamento e dos cabos, fazer todos os testes possíveis junto ao cliente para estar tirando qualquer dúvida que ele venha ter";
         relato = "Cliente sem conexão. Foi verificado que o equipamento está com LOS em alerta.";
         break;
       case "suporte":
       case "suporteint":
-        fraseOrientacao =
-          "Verificar a integridade do equipamento, Verificar a integridade dos conectores. Caso necessário EFETUAR A TROCA DO EQUIPAMENTO. Efetuar todos os testes de velocidade junto ao cliente.";
+        fraseOrientacao = "Verificar a integridade do equipamento, Verificar a integridade dos conectores. Caso necessário EFETUAR A TROCA DO EQUIPAMENTO. Efetuar todos os testes de velocidade junto ao cliente.";
         if (tipoOS.value === "suporte") {
           relato = "Cliente informa estar sem conexão. Foi verificado que o mesmo teve diversas quedas de conexão. Mesmo após as configurações remotas, sua conexão não retornou.";
         } else {
@@ -42,13 +40,13 @@ document.addEventListener("DOMContentLoaded", function () {
     return document.getElementById(checkboxId).checked;
   }
 
-  // Função para exibir/ocultar campos com base nas opções marcadas
+  // Função para exibir ou ocultar campos com base nas opções marcadas nos checkboxes
   function toggleCampos(checkboxId, campoId) {
     var campo = document.getElementById(campoId);
     campo.style.display = isChecked(checkboxId) ? "block" : "none";
   }
 
-  // Adiciona um ouvinte de evento para cada checkbox
+  // Defina uma lista de checkboxes e seus campos correspondentes
   var checkboxes = [
     { checkboxId: "chkPotenciaOnu", campoId: "campoPotenciaOnu" },
     { checkboxId: "chkGpon", campoId: "campoGpon" },
@@ -61,16 +59,18 @@ document.addEventListener("DOMContentLoaded", function () {
     { checkboxId: "chkOutros", campoId: "campoOutros" },
   ];
 
+  // Adiciona ouvintes de evento para cada checkbox
   checkboxes.forEach(function (checkbox) {
     var checkboxElement = document.getElementById(checkbox.checkboxId);
     checkboxElement.addEventListener("change", function () {
       toggleCampos(checkbox.checkboxId, checkbox.campoId);
     });
   });
-
-  // Adiciona um ouvinte de evento para o formulário
-  var formulario = document.getElementById("formulario");
-  formulario.addEventListener("submit", function (event) {
+});
+  
+  
+  // Adiciona um listener para o evento "submit" do formulário
+  document.getElementById("formulario").addEventListener("submit", function(event) {
     event.preventDefault();
   
     // Obtém os valores dos campos do formulário
@@ -182,26 +182,27 @@ document.addEventListener("DOMContentLoaded", function () {
   
   
       // Exibe a janela modal
-    var modal = document.getElementById("modal");
-    modal.style.display = "block";
-
-    // Exibe o conteúdo preenchido na janela modal
-    var textoExibido = document.getElementById("textoExibido");
-    textoExibido.value = conteudoExibido;
-
-    // Adiciona um ouvinte de evento para o botão Copiar
-    var btnCopiar = document.getElementById("btnCopiar");
-    btnCopiar.addEventListener("click", function () {
-      textoExibido.select();
-      document.execCommand("copy");
+      var modal = document.getElementById("modal");
+      modal.style.display = "block";
+  
+      // Exibe o conteúdo preenchido na janela modal
+      var textoExibido = document.getElementById("textoExibido");
+      textoExibido.value = conteudoExibido;
+  
+      // Adiciona um listener para o botão Copiar
+      document.getElementById("btnCopiar").addEventListener("click", function() {
+        textoExibido.select();
+        document.execCommand("copy");
+      });
     });
-
-    // Adiciona um ouvinte de evento para o botão Fechar
-    var btnFecharModal = document.getElementById("btnFecharModal");
-    btnFecharModal.addEventListener("click", function () {
+  
+  
+    // Fecha a janela modal ao clicar no botão Fechar
+    document.getElementById("btnFecharModal").addEventListener("click", function() {
+      var modal = document.getElementById("modal");
       modal.style.display = "none";
-      location.reload(); // Recarrega a página automaticamente
+  
+      // Recarrega a página automaticamente
+      location.reload();
     });
   });
-});
-  
